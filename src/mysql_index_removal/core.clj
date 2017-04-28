@@ -20,10 +20,11 @@
   (let [table-name (:table index)
         index-name (:key_name index)]
     (println "dropping index" index-name "for the table" table-name)
+    (println (str "ALTER TABLE " table-name " DROP INDEX " index-name))
     (try
       (sql/execute! db [(str "ALTER TABLE " table-name " DROP INDEX " index-name)])
-      (catch Exception _
-        (println "couldn't drop the index, sorry!")))))
+      (catch Exception e
+        (println "couldn't drop the index, sorry! " (.getMessage e))))))
 
 (defn drop-non-primary-indexes
   [db indexes]
